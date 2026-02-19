@@ -97,7 +97,19 @@ export default function MainPage() {
                                             <img src="y18.svg" width="18" height="18" style={{ border: '1px white solid' }} alt="logo" />
                                         </td>
                                         <td style={{ lineHeight: '12pt' }}>
-                                            <span className="pagetop"><b>Hacker News</b> new | past | comments | ask | show | jobs | submit</span>
+                                            <span className="pagetop">
+                                                <b>Hacker News</b> new | past | comments | ask | show | jobs | submit | {' '}
+                                                {localStorage.getItem('token') ? (
+                                                    <a href="#" onClick={(e) => {
+                                                        e.preventDefault();
+                                                        localStorage.removeItem('token');
+                                                        localStorage.removeItem('user');
+                                                        window.location.reload();
+                                                    }}>logout</a>
+                                                ) : (
+                                                    <a href="/login">login</a>
+                                                )}
+                                            </span>
                                         </td>
                                     </tr>
                                 </tbody>

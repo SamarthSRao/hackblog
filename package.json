@@ -1,0 +1,23 @@
+{
+  "name": "hackblog-backend",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "db:generate": "drizzle-kit generate:pg",
+    "db:push": "drizzle-kit push:pg",
+    "db:studio": "drizzle-kit studio",
+    "db:seed": "node lib/db/seed.js",
+    "db:reset": "node lib/db/reset.js",
+    "docker:up": "docker-compose up -d",
+    "docker:down": "docker-compose down"
+  },
+  "dependencies": {
+    "drizzle-orm": "^0.29.3",
+    "postgres": "^3.4.3",
+    "dotenv": "^16.4.1"
+  },
+  "devDependencies": {
+    "drizzle-kit": "^0.20.10"
+  }
+}
