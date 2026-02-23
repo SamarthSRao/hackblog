@@ -44,4 +44,34 @@ const HackerNewsStories = () => {
     );
 };
 
+export function StoryItem( { story}) {
+    return (
+        <tr className = "athing">
+            <td className = "title.rank">{story.rank}.</td>
+            <td className = "votelinks">
+                <div className = "votearrow"></div>
+
+            </td>
+            <td className="title">
+                <span className ="titleline">
+                    <a href = {story.url}>{story.title}</a>
+                    <span className="sitebit"> ({story.source})</span>
+                </span>
+            </td>
+        </tr>
+    );
+}
+
+
+export function StorySubtext( {story}) {
+    return (
+        <tr>
+            <td colsapan="2"></td>
+            <td className = "subtext">
+                {story.score} points by {story.user} {story.age} | hide | {story.comments} comments   
+            </td>
+        </tr>
+    );
+}
+
 export default HackerNewsStories;

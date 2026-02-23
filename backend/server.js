@@ -1,0 +1,37 @@
+import express from 'express';
+import cors from 'cors';
+import { login, register, getCurrentUser } from './routes/auth.js';
+import { getStories, getStoryById, createStory } from './routes/stories.js';
+import { createComment } from './routes/comments.js';
+import { authenticate } from './middleware/auth.js';
+import dotenv from 'dotenv';
+
+dotenv.config();
+
+const app = express();
+const PORT = process.env.PORT || 3000;
+
+// Middleware
+app.use(cors());
+app.use(express.json());
+
+// Routes
+app.post('/api/auth/login', login);
+app.post('/api/auth/register', register);
+app.get('/api/auth/me', authenticate, getCurrentUser);
+
+// Stories & Comments
+app.get('/api/stories', getStories);
+app.get('/api/stories/:id', getStoryById);
+app.post('/api/stories', authenticate, createStory);
+app.post('/api/comments', authenticate, createComment);
+
+// Health check
+app.get('/health', (req, res) => {
+    res.json({ status: 'ok', timestamp: new Date() });
+});
+
+// Start server
+app.listen(PORT, () => {
+    console.log(`🚀 Server running on port ${PORT}`);
+});

@@ -49,10 +49,11 @@ const StorySubtext = ({ story }) => (
     <tr>
         <td colSpan="2"></td>
         <td className="subtext">
-            <span className="score" id={`score_${story.id}`}>{story.score} points</span> by <a href="#" className="hnuser">{story.user}</a> <span className="age"><a href="#">{story.age}</a></span> | <a href="#">hide</a> | <a href="#">{story.comments} comments</a>
+            <span className="score" id={`score_${story.id}`}>{story.score} points</span> by <a href={`/user/${story.userId}`} className="hnuser">{story.user}</a> <span className="age"><a href="#">{story.age}</a></span> | <a href="#">hide</a> | <a href={`/comments/${story.id}`}>{story.comments} comments</a>
         </td>
     </tr>
 );
+
 
 export default function MainPage() {
     const [stories, setStories] = useState([]);
@@ -70,7 +71,9 @@ export default function MainPage() {
                     source: getHostname(story.url),
                     score: story.points,
                     user: story.author,
+                    userId: story.author,
                     age: timeAgo(story.created_at),
+
                     comments: story.num_comments,
                     url: story.url
                 }));
@@ -107,7 +110,9 @@ export default function MainPage() {
                                                         window.location.reload();
                                                     }}>logout</a>
                                                 ) : (
-                                                    <a href="/login">login</a>
+                                                    <React.Fragment>
+                                                        <a href="/login">login</a> | <a href="/register">register</a>
+                                                    </React.Fragment>
                                                 )}
                                             </span>
                                         </td>

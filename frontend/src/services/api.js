@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = 'http://localhost:5000/api'; // Adjust based on your backend URL
+const API_URL = 'http://localhost:3000/api';
 
 const api = axios.create({
     baseURL: API_URL,
@@ -25,19 +25,6 @@ export const setStoredUser = (user) => {
 
 export const authAPI = {
     login: async (email, password) => {
-        // Mock login for now if backend isn't ready
-        // Remove this mock block when backend is ready
-        if (email === "test@example.com" && password === "password") {
-            return new Promise((resolve) => {
-                setTimeout(() => {
-                    resolve({
-                        token: "mock-jwt-token-12345",
-                        user: { id: 1, name: "Test User", email: email }
-                    });
-                }, 1000);
-            });
-        }
-
         const response = await api.post('/auth/login', { email, password });
         return response.data;
     },

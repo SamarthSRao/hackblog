@@ -11,6 +11,25 @@ services:
     volumes:
       - hackblog_data:/var/lib/postgresql/data
     restart: unless-stopped
+    networks:
+      - hackblog-network
+
+  hackblog-backend:
+    build: ./backend
+    container_name: hackblog-backend
+    ports:
+      - "3000:3000"
+    depends_on:
+      - hackblog-db
+    environment:
+      - DATABASE_URL=postgresql://postgres:password@hackblog-db:5432/hackblog
+      - PORT=3000
+    networks:
+      - hackblog-network
 
 volumes:
   hackblog_data:
+
+
+networks:
+  hackblog-network:
