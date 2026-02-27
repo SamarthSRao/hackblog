@@ -5,6 +5,10 @@ import RegisterPage from './pages/RegisterPage';
 import './App.css';
 import ProfilePage from './pages/ProfilePage';
 import CommentPage from './pages/CommentsPage';
+
+import SubmitPage from './pages/SubmitPage';
+
+
 function App() {
   return (
     <div className="App">
@@ -15,6 +19,7 @@ function App() {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
           {/* Catch all - redirect to home */}
+          <Route path="/submit" element={<SubmitPage />} />
           <Route path="/user/:userId" element={<ProfilePage />} />
           <Route path="/comments/:postId" element={<CommentPage />} />
           <Route path="*" element={<Navigate to="/" replace />} />

@@ -1,5 +1,5 @@
 import { db, users } from '../lib/db/index.js';
-import { eq } from 'drizzle-orm';
+import { eq, sql } from 'drizzle-orm';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 
@@ -16,11 +16,13 @@ export async function login(req, res) {
     try {
         // Basic validation
         if (!email || !password) {
-            return res.status(400).json({ error: 'Email and password are required' });
+            return res.status(400).json({ error: 'Email or Username and password are required' });
         }
 
-        // Find user by email
-        const [user] = await db.select().from(users).where(eq(users.email, email)).limit(1);
+        // Find user by email OR username
+        const [user] = await db.select().from(users)
+            .where(sql`${users.email} = ${email} OR ${users.username} = ${email}`)
+            .limit(1);
 
         if (!user) {
             return res.status(401).json({ error: 'Invalid credentials' });

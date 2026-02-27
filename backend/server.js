@@ -1,7 +1,8 @@
 import express from 'express';
 import cors from 'cors';
 import { login, register, getCurrentUser } from './routes/auth.js';
-import { getStories, getStoryById, createStory } from './routes/stories.js';
+import { getUserProfile } from './routes/user.js';
+import { getStories, getById, createStory } from './routes/stories.js';
 import { createComment } from './routes/comments.js';
 import { authenticate } from './middleware/auth.js';
 import dotenv from 'dotenv';
@@ -19,13 +20,13 @@ app.use(express.json());
 app.post('/api/auth/login', login);
 app.post('/api/auth/register', register);
 app.get('/api/auth/me', authenticate, getCurrentUser);
+app.get('/api/users/:userId', getUserProfile);
 
 // Stories & Comments
 app.get('/api/stories', getStories);
-app.get('/api/stories/:id', getStoryById);
+app.get('/api/stories/:id', getById);
 app.post('/api/stories', authenticate, createStory);
 app.post('/api/comments', authenticate, createComment);
-
 // Health check
 app.get('/health', (req, res) => {
     res.json({ status: 'ok', timestamp: new Date() });

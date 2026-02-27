@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { storiesApi } from './services/api';
+import { Link } from 'react-router-dom';
 
 const timeAgo = (date) => {
     const rtf = new Intl.RelativeTimeFormat('en', { numeric: 'auto' });
@@ -61,21 +63,20 @@ export default function MainPage() {
     useEffect(() => {
         const fetchStories = async () => {
             try {
-                const response = await fetch('https://hn.algolia.com/api/v1/search?tags=front_page&hitsPerPage=30');
-                const data = await response.json();
+                const response = await storiesApi.getStories();
+                const data = response.data; // Axios response data
 
-                const formattedStories = data.hits.map((story, index) => ({
-                    id: story.objectID,
+                const formattedStories = data.map((story, index) => ({
+                    id: story.id,
                     rank: index + 1,
                     title: story.title,
-                    source: getHostname(story.url),
-                    score: story.points,
-                    user: story.author,
-                    userId: story.author,
-                    age: timeAgo(story.created_at),
-
-                    comments: story.num_comments,
-                    url: story.url
+                    source: story.url ? getHostname(story.url) : 'self',
+                    score: story.score || 0,
+                    user: story.author || 'unknown',
+                    userId: story.author || 'unknown',
+                    age: timeAgo(story.createdAt),
+                    comments: story.commentsCount || 0,
+                    url: story.url || `/comments/${story.id}`
                 }));
 
                 setStories(formattedStories);
@@ -86,6 +87,7 @@ export default function MainPage() {
 
         fetchStories();
     }, []);
+
 
     return (
         <center>
@@ -101,7 +103,7 @@ export default function MainPage() {
                                         </td>
                                         <td style={{ lineHeight: '12pt' }}>
                                             <span className="pagetop">
-                                                <b>Hacker News</b> new | past | comments | ask | show | jobs | submit | {' '}
+                                                <b>Hacker News</b> new | past | comments | ask | show | jobs | <Link to="/submit">submit</Link> | {' '}
                                                 {localStorage.getItem('token') ? (
                                                     <a href="#" onClick={(e) => {
                                                         e.preventDefault();

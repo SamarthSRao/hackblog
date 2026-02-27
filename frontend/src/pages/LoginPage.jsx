@@ -35,7 +35,7 @@ function LoginPage() {
                 throw new Error("Invalid response from server");
             }
         } catch (err) {
-            setError(err.message || "Login Failed");
+            setError(err.response?.data?.error || err.message || "Login Failed");
         }
         finally {
             setIsLoading(false);
@@ -47,8 +47,7 @@ function LoginPage() {
             const token = localStorage.getItem('token');
             if (token) {
                 try {
-                    // await api.get('/auth/me'); // Check if token is valid
-                    // For now, assume valid if token exists to allow testing without backend
+                    await api.get('/auth/me'); // Check if token is valid
                     navigate('/', { replace: true });
                 } catch (err) {
                     localStorage.removeItem('token');
@@ -75,9 +74,9 @@ function LoginPage() {
                 {error && <div className="error-message">{error}</div>}
                 <form onSubmit={handleLogin}>
                     <div className="form-group">
-                        <label className="form-label">Email</label>
+                        <label className="form-label">Email or Username</label>
                         <input
-                            type="email"
+                            type="text"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                             className="form-input"
