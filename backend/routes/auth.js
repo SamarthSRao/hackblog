@@ -1,5 +1,5 @@
 import { db, users } from '../lib/db/index.js';
-import { eq, sql } from 'drizzle-orm';
+import { eq, or, sql } from 'drizzle-orm';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 
@@ -72,11 +72,14 @@ export async function register(req, res) {
             return res.status(400).json({ error: 'Password must be at least 6 characters' });
         }
 
-        // Check if user exists
-        const [existingUser] = await db.select().from(users).where(eq(users.email, email)).limit(1);
+        // Check if user exists (by email OR username)
+        const [existingUser] = await db.select().from(users)
+            .where(or(eq(users.email, email), eq(users.username, name)))
+            .limit(1);
 
         if (existingUser) {
-            return res.status(409).json({ error: 'User already exists' });
+            const conflictField = existingUser.email === email ? 'Email' : 'Username';
+            return res.status(409).json({ error: `${conflictField} already exists` });
         }
 
         // Hash password

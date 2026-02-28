@@ -43,6 +43,7 @@ export const comments = pgTable('comments', {
     parentId: uuid('parent_id').references(() => comments.id, { onDelete: 'cascade' }),
     createdAt: timestamp('created_at').defaultNow().notNull(),
     updatedAt: timestamp('updated_at').defaultNow().notNull(),
+    score: integer('score').default(0).notNull(),
 });
 
 /**
