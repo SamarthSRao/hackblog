@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { storiesApi } from './services/api';
+import { storiesApi, votesApi } from './services/api';
 import { Link } from 'react-router-dom';
+import Header from './components/Header';
 
 const timeAgo = (date) => {
     const rtf = new Intl.RelativeTimeFormat('en', { numeric: 'auto' });
@@ -39,11 +40,24 @@ const getHostname = (url) => {
     }
 }
 
-const StoryItem = ({ story }) => (
+const StoryItem = ({ story, onVote }) => (
     <tr className='athing' id={story.id}>
         <td align="right" valign="top" className="title"><span className="rank">{story.rank}.</span></td>
-        <td valign="top" className="votelinks"><center><a id={`up_${story.id}`} href="#"><div className="votearrow" title="upvote"></div></a></center></td>
-        <td className="title"><a href={story.url} className="storylink">{story.title}</a><span className="sitebit comhead"> (<a href="#"><span className="sitestr">{story.source}</span></a>)</span></td>
+        <td valign="top" className="votelinks">
+            <center>
+                <a
+                    id={`up_${story.id}`}
+                    href="#"
+                    onClick={(e) => { e.preventDefault(); onVote(story.id); }}
+                >
+                    <div className="votearrow" title="upvote"></div>
+                </a>
+            </center>
+        </td>
+        <td className="title">
+            <a href={story.url} className="storylink">{story.title}</a>
+            {story.source !== 'self' && <span className="sitebit comhead"> (<a href="#"><span className="sitestr">{story.source}</span></a>)</span>}
+        </td>
     </tr>
 );
 
@@ -51,7 +65,7 @@ const StorySubtext = ({ story }) => (
     <tr>
         <td colSpan="2"></td>
         <td className="subtext">
-            <span className="score" id={`score_${story.id}`}>{story.score} points</span> by <a href={`/user/${story.userId}`} className="hnuser">{story.user}</a> <span className="age"><a href="#">{story.age}</a></span> | <a href="#">hide</a> | <a href={`/comments/${story.id}`}>{story.comments} comments</a>
+            <span className="score" id={`score_${story.id}`}>{story.score} points</span> by <a href={`/user/${story.userId}`} className="hnuser">{story.user}</a> <span className="age"><a href={`/comments/${story.id}`}>{story.age}</a></span> | <a href="#">hide</a> | <a href={`/comments/${story.id}`}>{story.comments} comments</a>
         </td>
     </tr>
 );
@@ -60,69 +74,63 @@ const StorySubtext = ({ story }) => (
 export default function MainPage() {
     const [stories, setStories] = useState([]);
 
+    const fetchStories = async () => {
+        try {
+            const response = await storiesApi.getStories();
+            const data = response.data; // Axios response data
+
+            const formattedStories = data.map((story, index) => ({
+                id: story.id,
+                rank: index + 1,
+                title: story.title,
+                source: story.url ? getHostname(story.url) : 'self',
+                score: story.score || 0,
+                user: story.author || 'unknown',
+                userId: story.author || 'unknown',
+                age: timeAgo(story.createdAt),
+                comments: story.commentsCount || 0,
+                url: story.url || `/comments/${story.id}`
+            }));
+
+            setStories(formattedStories);
+        } catch (error) {
+            console.error('Error fetching stories:', error);
+        }
+    };
+
     useEffect(() => {
-        const fetchStories = async () => {
-            try {
-                const response = await storiesApi.getStories();
-                const data = response.data; // Axios response data
-
-                const formattedStories = data.map((story, index) => ({
-                    id: story.id,
-                    rank: index + 1,
-                    title: story.title,
-                    source: story.url ? getHostname(story.url) : 'self',
-                    score: story.score || 0,
-                    user: story.author || 'unknown',
-                    userId: story.author || 'unknown',
-                    age: timeAgo(story.createdAt),
-                    comments: story.commentsCount || 0,
-                    url: story.url || `/comments/${story.id}`
-                }));
-
-                setStories(formattedStories);
-            } catch (error) {
-                console.error('Error fetching stories:', error);
-            }
-        };
-
         fetchStories();
     }, []);
+
+    const handleVote = async (storyId) => {
+        if (!localStorage.getItem('token')) {
+            alert('Please login to vote');
+            return;
+        }
+
+        try {
+            const response = await votesApi.toggleVote({
+                itemId: storyId,
+                itemType: 'story',
+                value: 1
+            });
+
+            // Update local state optimistically or just refresh
+            setStories(prevStories => prevStories.map(s =>
+                s.id === storyId ? { ...s, score: s.score + response.data.scoreDelta } : s
+            ));
+        } catch (error) {
+            console.error('Error voting:', error);
+            alert('Failed to cast vote');
+        }
+    };
 
 
     return (
         <center>
-            <table id="hnmain" border="0" cellPadding="0" cellSpacing="0" width="85%">
+            <table id="hnmain" border="0" cellPadding="0" cellSpacing="0" width="85%" bgcolor="#f6f6ef">
                 <tbody>
-                    <tr className="header-row">
-                        <td bgcolor="#d312b3ff">
-                            <table border="0" cellPadding="0" cellSpacing="0" width="100%" style={{ padding: '2px' }}>
-                                <tbody>
-                                    <tr>
-                                        <td style={{ width: '18px', paddingRight: '4px' }}>
-                                            <img src="y18.svg" width="18" height="18" style={{ border: '1px white solid' }} alt="logo" />
-                                        </td>
-                                        <td style={{ lineHeight: '12pt' }}>
-                                            <span className="pagetop">
-                                                <b>Hacker News</b> new | past | comments | ask | show | jobs | <Link to="/submit">submit</Link> | {' '}
-                                                {localStorage.getItem('token') ? (
-                                                    <a href="#" onClick={(e) => {
-                                                        e.preventDefault();
-                                                        localStorage.removeItem('token');
-                                                        localStorage.removeItem('user');
-                                                        window.location.reload();
-                                                    }}>logout</a>
-                                                ) : (
-                                                    <React.Fragment>
-                                                        <a href="/login">login</a> | <a href="/register">register</a>
-                                                    </React.Fragment>
-                                                )}
-                                            </span>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </td>
-                    </tr>
+                    <Header />
                     <tr style={{ height: '10px' }}></tr>
                     <tr>
                         <td>
@@ -130,7 +138,7 @@ export default function MainPage() {
                                 <tbody>
                                     {stories.map((story) => (
                                         <React.Fragment key={story.id}>
-                                            <StoryItem story={story} />
+                                            <StoryItem story={story} onVote={handleVote} />
                                             <StorySubtext story={story} />
                                             <tr className="spacer" style={{ height: '5px' }}></tr>
                                         </React.Fragment>

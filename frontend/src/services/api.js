@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = 'http://localhost:3000/api';
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api';
 
 const api = axios.create({
     baseURL: API_URL,
@@ -23,7 +23,7 @@ api.interceptors.response.use(
         return Promise.reject(error);
     }
 );
-
+export const getCurrentUser = () => api.get('/auth/me');
 export const setAuthToken = (token) => {
     if (token) {
         api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
@@ -70,5 +70,8 @@ export const storiesApi = {
 }
 export const userApi = {
     getUserProfile: (userId) => api.get(`/users/${userId}`),
+}
+export const votesApi = {
+    toggleVote: (voteData) => api.post('/votes', voteData)
 }
 export default api;

@@ -19,6 +19,7 @@ function App() {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
           {/* Catch all - redirect to home */}
+
           <Route path="/submit" element={<SubmitPage />} />
           <Route path="/user/:userId" element={<ProfilePage />} />
           <Route path="/comments/:postId" element={<CommentPage />} />

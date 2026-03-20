@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { userApi } from '../services/api';
+import Header from '../components/Header';
 
 export default function ProfilePage() {
     const { userId } = useParams();
@@ -29,24 +30,7 @@ export default function ProfilePage() {
         <center>
             <table id="hnmain" border="0" cellPadding="0" cellSpacing="0" width="85%" bgcolor="#f6f6ef">
                 <tbody>
-                    <tr>
-                        <td bgcolor="#d312b3ff">
-                            <table border="0" cellPadding="0" cellSpacing="0" width="100%" style={{ padding: '2px' }}>
-                                <tbody>
-                                    <tr>
-                                        <td style={{ width: '18px', paddingRight: '4px' }}>
-                                            <a href="/"><img src="/y18.svg" width="18" height="18" style={{ border: '1px white solid' }} alt="logo" /></a>
-                                        </td>
-                                        <td style={{ lineHeight: '12pt' }}>
-                                            <span className="pagetop">
-                                                <b className="hnname"><a href="/">Hacker News</a></b>
-                                            </span>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </td>
-                    </tr>
+                    <Header />
                     <tr style={{ height: '10px' }}></tr>
                     <tr>
                         <td style={{ padding: '0 10px' }}>

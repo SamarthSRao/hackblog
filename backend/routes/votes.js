@@ -26,11 +26,10 @@ export async function toggleVote(req, res) {
             .limit(1);
 
         if (existingVote) {
-            // If the same value, remove it (toggle off)
+
             if (existingVote.value === value) {
                 await db.delete(votes).where(eq(votes.id, existingVote.id));
 
-                // Update item score
                 const table = itemType === 'story' ? stories : comments;
                 await db.update(table)
                     .set({ score: sql`${table.score} - ${value}` })
