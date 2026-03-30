@@ -12,7 +12,7 @@ export const AuthProvider = ({ children }) => {
         const loadUser = async () => {
             if (token) {
                 try {
-                    const response = await authAPI.getCurrentUser();
+                    const response = await getCurrentUser();
                     setUser(response.data.user);
 
                 }
@@ -35,11 +35,12 @@ export const AuthProvider = ({ children }) => {
         try {
 
 
-            const response = await authApi.login(email, password);
-            setAuthToken(data.token);
-            setUser(data.user);
-            localStorage.setItem('token', response.data.token);
-            localStorage.setItem('user', JSON.stringify(response.data.user));
+            const response = await authAPI.login(email, password);
+            setToken(response.token);
+            setAuthToken(response.token);
+            setUser(response.user);
+            localStorage.setItem('token', response.token);
+            localStorage.setItem('user', JSON.stringify(response.user));
         }
         catch (error) {
             console.log(error);
@@ -48,11 +49,12 @@ export const AuthProvider = ({ children }) => {
     }
     const register = async (name, email, password) => {
         try {
-            const response = await authApi.register({ name, email, password });
-            setToken(data.token);
-            setUser(data.user);
-            localStorage.setItem('token', response.data.token);
-            localStorage.setItem('user', JSON.stringify(response.data.user));
+            const response = await authAPI.register({ name, email, password });
+            setToken(response.token);
+            setAuthToken(response.token);
+            setUser(response.user);
+            localStorage.setItem('token', response.token);
+            localStorage.setItem('user', JSON.stringify(response.user));
         }
         catch (error) {
             console.log(error);
@@ -66,7 +68,7 @@ export const AuthProvider = ({ children }) => {
         localStorage.removeItem('user');
     }
     return (
-        <AuthContext.Provider value={{ user, token, login, register, logout, loading }}>
+        <AuthContext.Provider value={{ user, token, login, register, logout, loading, isLoggedIn: !!user }}>
             {children}
         </AuthContext.Provider>
     )
