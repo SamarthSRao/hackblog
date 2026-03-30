@@ -31,6 +31,7 @@ export default function SubmitPage() {
         <center>
             <table border="0" cellPadding="0" cellSpacing="0" width="85%">
                 <tbody>
+                    < Header />
                     <tr>
                         <td style={{ border: '1px solid #ff00c8ff', padding: '10px' }}>
                             <form onSubmit={handleSubmit}>
