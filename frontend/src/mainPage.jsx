@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { storiesApi, votesApi } from './services/api';
 import { Link } from 'react-router-dom';
 import Header from './components/Header';
+import { useAuth } from './context/Authcontext';
+import Footer from './components/Footer';
 
 const timeAgo = (date) => {
     const rtf = new Intl.RelativeTimeFormat('en', { numeric: 'auto' });
@@ -73,7 +75,10 @@ const StorySubtext = ({ story }) => (
 
 export default function MainPage() {
     const [stories, setStories] = useState([]);
-
+    const { user } = useAuth();
+    const [searchQuery, setSearchQuery] = useState("");
+    const [allStories, setAllStories] = useState([]);
+    const [filteredStories, setFilteredStories] = useState([]);
     const fetchStories = async () => {
         try {
             const response = await storiesApi.getStories();
@@ -93,11 +98,20 @@ export default function MainPage() {
             }));
 
             setStories(formattedStories);
+            setAllStories(formattedStories);
+            setFilteredStories(formattedStories);
         } catch (error) {
             console.error('Error fetching stories:', error);
         }
     };
-
+    const handleSearch = (query) => {
+        setSearchQuery(query);
+        const filtered = allStories.filter(story =>
+            story.title.toLowerCase().includes(query.toLowerCase()) ||
+            story.user.toLowerCase().includes(query.toLowerCase())
+        );
+        setFilteredStories(filtered);
+    }
     useEffect(() => {
         fetchStories();
     }, []);
@@ -115,10 +129,15 @@ export default function MainPage() {
                 value: 1
             });
 
-            // Update local state optimistically or just refresh
-            setStories(prevStories => prevStories.map(s =>
+            // Update all lists locally to keep the score in sync immediately
+            const updateStories = (prev) => prev.map(s => 
                 s.id === storyId ? { ...s, score: s.score + response.data.scoreDelta } : s
-            ));
+            );
+
+            setStories(updateStories);
+            setAllStories(updateStories);
+            setFilteredStories(updateStories);
+
         } catch (error) {
             console.error('Error voting:', error);
             alert('Failed to cast vote');
@@ -136,7 +155,7 @@ export default function MainPage() {
                         <td>
                             <table border="0" cellPadding="0" cellSpacing="0">
                                 <tbody>
-                                    {stories.map((story) => (
+                                    {filteredStories.map((story) => (
                                         <React.Fragment key={story.id}>
                                             <StoryItem story={story} onVote={handleVote} />
                                             <StorySubtext story={story} />
@@ -148,6 +167,7 @@ export default function MainPage() {
                         </td>
                     </tr>
                 </tbody>
+                <Footer onSearch={handleSearch} />
             </table>
         </center>
     );
