@@ -61,10 +61,12 @@ if (token) {
 
 export const commentsApi = {
     getPost: (postId) => api.get(`/comments/${postId}`),
-    createComment: (commentData) => api.post('/comments', commentData)
+    createComment: (commentData) => api.post('/comments', commentData),
+    getCommentsPage: () => api.get('/comments')
 }
 export const storiesApi = {
     getStories: (search) => api.get('/stories', { params: { search } }),
+    getAskStories: () => api.get('/ask'),
     getById: (storyId) => api.get(`/stories/${storyId}`),
     createStory: (storyData) => api.post('/stories', storyData)
 }

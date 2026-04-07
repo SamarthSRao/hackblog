@@ -2,7 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import { login, register, getCurrentUser } from './routes/auth.js';
 import { getUserProfile } from './routes/user.js';
-import { getStories, getById, createStory, getAllComments } from './routes/stories.js';
+import { getStories, getById, createStory, getAllComments, getAskStories } from './routes/stories.js';
 import { createComment } from './routes/comments.js';
 import { toggleVote } from './routes/votes.js';
 import { authenticate } from './middleware/auth.js';

@@ -80,6 +80,62 @@ export async function getById(req, res) {
 /**
  * Create a new story
  */
+export async function getAllComments(req, res) {
+    try {
+        const result = await db.select({
+            id: comments.id,
+            content: comments.content,
+            createdAt: comments.createdAt,
+            author: {
+                username: users.username,
+            },
+            story: {
+                id: stories.id,
+                title: stories.title,
+            },
+            storyId: comments.storyId,
+            parentId: comments.parentId
+
+        })
+            .from(comments)
+            .leftJoin(users, eq(comments.authorId, users.id))
+            .leftJoin(stories, eq(comments.storyId, stories.id))
+            .orderBy(desc(comments.createdAt))
+            .limit(100);
+        res.json(result);
+    } catch (error) {
+        console.error('Get Comments error:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+}
+export default async function getAskComments(req, res) {
+    try {
+        const result = await db.select({
+            id: comments.id,
+            content: comments.content,
+            createdAt: comments.createdAt,
+            author: {
+                username: users.username,
+            },
+            story: {
+                id: stories.id,
+                title: stories.title,
+            },
+            storyId: comments.storyId,
+            parentId: comments.parentId
+        })
+            .from(comments)
+            .leftJoin(users, eq(comments.authorId, users.id))
+            .leftJoin(stories, eq(comments.storyId, stories.id))
+            .where(eq(stories.title, 'Ask HN'))
+            .orderBy(desc(comments.createdAt))
+            .limit(100);
+        res.json(result);
+    } catch (error) {
+        console.error('Get Ask  Stories error:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+}
 export async function createStory(req, res) {
     const { title, url, text } = req.body;
     const authorId = req.user.id;
@@ -100,6 +156,35 @@ export async function createStory(req, res) {
         res.status(201).json(newStory);
     } catch (error) {
         console.error('Create Story error:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+}
+
+/**
+ * Get Ask HN stories
+ */
+export async function getAskStories(req, res) {
+    try {
+        const result = await db.select({
+            id: stories.id,
+            title: stories.title,
+            url: stories.url,
+            text: stories.text,
+            score: stories.score,
+            author: users.username,
+            createdAt: stories.createdAt,
+            commentsCount: sql`count(${comments.id})`.mapWith(Number)
+        })
+            .from(stories)
+            .leftJoin(users, eq(stories.authorId, users.id))
+            .leftJoin(comments, eq(stories.id, comments.storyId))
+            .where(ilike(stories.title, 'Ask HN%'))
+            .groupBy(stories.id, users.username, stories.title, stories.url, stories.text, stories.score, stories.createdAt)
+            .orderBy(desc(stories.createdAt));
+
+        res.json(result);
+    } catch (error) {
+        console.error('Get Ask Stories error:', error);
         res.status(500).json({ error: 'Internal server error' });
     }
 }
