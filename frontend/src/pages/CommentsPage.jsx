@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import Header from '../components/Header';
 import { storiesApi, votesApi, commentsApi } from '../services/api';
+import Footer from '../components/Footer';
 const buildCommentTree = (flatComments) => {
     const map = {};
     const roots = [];
@@ -210,6 +211,7 @@ export default function CommentsPage() {
                         </td>
                     </tr>
                 </tbody>
+                <Footer />
             </table>
         </center>
     );

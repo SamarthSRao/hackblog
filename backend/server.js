@@ -2,7 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import { login, register, getCurrentUser } from './routes/auth.js';
 import { getUserProfile } from './routes/user.js';
-import { getStories, getById, createStory } from './routes/stories.js';
+import { getStories, getById, createStory, getAllComments } from './routes/stories.js';
 import { createComment } from './routes/comments.js';
 import { toggleVote } from './routes/votes.js';
 import { authenticate } from './middleware/auth.js';
@@ -25,7 +25,8 @@ app.post('/api/auth/login', login);
 app.post('/api/auth/register', register);
 app.get('/api/auth/me', authenticate, getCurrentUser);
 app.get('/api/users/:userId', getUserProfile);
-
+app.get('/api/comments', getAllComments)
+app.get('/api/ask', getAskStories)
 // Stories & Comments
 app.get('/api/stories', getStories);
 app.get('/api/stories/:id', getById);

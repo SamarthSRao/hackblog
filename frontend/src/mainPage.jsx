@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import Header from './components/Header';
 import { useAuth } from './context/Authcontext';
 import Footer from './components/Footer';
-
+import { useSearchParams } from 'react-router-dom';
 const timeAgo = (date) => {
     const rtf = new Intl.RelativeTimeFormat('en', { numeric: 'auto' });
     const now = new Date();
@@ -76,12 +76,13 @@ const StorySubtext = ({ story }) => (
 export default function MainPage() {
     const [stories, setStories] = useState([]);
     const { user } = useAuth();
+    const [searchParams] = useSearchParams(); // Read from URL
     const [searchQuery, setSearchQuery] = useState("");
     const [allStories, setAllStories] = useState([]);
     const [filteredStories, setFilteredStories] = useState([]);
-    const fetchStories = async () => {
+    const fetchStories = async (query = "") => {
         try {
-            const response = await storiesApi.getStories();
+            const response = await storiesApi.getStories(query);
             const data = response.data; // Axios response data
 
             const formattedStories = data.map((story, index) => ({
@@ -106,15 +107,13 @@ export default function MainPage() {
     };
     const handleSearch = (query) => {
         setSearchQuery(query);
-        const filtered = allStories.filter(story =>
-            story.title.toLowerCase().includes(query.toLowerCase()) ||
-            story.user.toLowerCase().includes(query.toLowerCase())
-        );
-        setFilteredStories(filtered);
+        fetchStories(query);
     }
     useEffect(() => {
-        fetchStories();
-    }, []);
+        const query = searchParams.get('search') || "";
+        setSearchQuery(query);
+        fetchStories(query);
+    }, [searchParams]);
 
     const handleVote = async (storyId) => {
         if (!localStorage.getItem('token')) {
@@ -130,7 +129,7 @@ export default function MainPage() {
             });
 
             // Update all lists locally to keep the score in sync immediately
-            const updateStories = (prev) => prev.map(s => 
+            const updateStories = (prev) => prev.map(s =>
                 s.id === storyId ? { ...s, score: s.score + response.data.scoreDelta } : s
             );
 

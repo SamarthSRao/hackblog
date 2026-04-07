@@ -7,6 +7,7 @@ import ProfilePage from './pages/ProfilePage';
 import CommentPage from './pages/CommentsPage';
 
 import SubmitPage from './pages/SubmitPage';
+import RecentCommentsPage from './pages/RecentCommentsPage.jsx';
 
 
 function App() {
@@ -19,7 +20,10 @@ function App() {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
           {/* Catch all - redirect to home */}
-
+          <Route path="/ask" element={<AskPage />} />
+          <Route path="/comments" element={<RecentCommentsPage />} />
+          <Route path="/show" element={<ShowPage />} />
+          <Route path="/jobs" element={<JobsPage />} />
           <Route path="/submit" element={<SubmitPage />} />
           <Route path="/user/:userId" element={<ProfilePage />} />
           <Route path="/comments/:postId" element={<CommentPage />} />

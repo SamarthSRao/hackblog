@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { storiesApi } from "../services/api";
 import Header from "../components/Header";
-
+import Footer from "../components/Footer";
 
 export default function SubmitPage() {
     const [title, setTitle] = useState('');
@@ -66,6 +66,7 @@ export default function SubmitPage() {
                         </td>
                     </tr>
                 </tbody>
+                <Footer />
             </table>
         </center>
     );

@@ -64,7 +64,7 @@ export const commentsApi = {
     createComment: (commentData) => api.post('/comments', commentData)
 }
 export const storiesApi = {
-    getStories: () => api.get('/stories'),
+    getStories: (search) => api.get('/stories', { params: { search } }),
     getById: (storyId) => api.get(`/stories/${storyId}`),
     createStory: (storyData) => api.post('/stories', storyData)
 }

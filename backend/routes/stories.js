@@ -1,10 +1,11 @@
 import { db, stories, users, comments } from '../lib/db/index.js';
-import { eq, desc, sql } from 'drizzle-orm';
+import { eq, desc, sql, ilike, or } from 'drizzle-orm';
 
 /**
  * Get all stories
  */
 export async function getStories(req, res) {
+    const { search } = req.query
     try {
         const result = await db.select({
             id: stories.id,
@@ -19,6 +20,10 @@ export async function getStories(req, res) {
             .from(stories)
             .leftJoin(users, eq(stories.authorId, users.id))
             .leftJoin(comments, eq(stories.id, comments.storyId))
+            .where(search ? or(
+                ilike(stories.title, `%${search}%`),
+                ilike(users.username, `%${search}%`)
+            ) : undefined)
             .groupBy(stories.id, users.username, stories.title, stories.url, stories.text, stories.score, stories.createdAt)
             .orderBy(desc(stories.createdAt));
 

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { userApi } from '../services/api';
 import Header from '../components/Header';
-
+import Footer from '../components/Footer';
 export default function ProfilePage() {
     const { userId } = useParams();
     const [user, setUser] = useState(null);
@@ -76,6 +76,7 @@ export default function ProfilePage() {
                         </td>
                     </tr>
                 </tbody>
+                <Footer />
             </table>
         </center>
     );
