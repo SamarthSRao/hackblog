@@ -13,7 +13,7 @@ const Header = () => {
 
     return (
         <tr className="header-row">
-            <td bgcolor="#d312b3ff">
+            <td bgcolor="#ff6600">
                 <table border="0" cellPadding="0" cellSpacing="0" width="100%" style={{ padding: '2px' }}>
                     <tbody>
                         <tr>
@@ -22,8 +22,8 @@ const Header = () => {
                                     <div style={{ 
                                         width: '18px', 
                                         height: '18px', 
-                                        backgroundColor: '#000', 
-                                        color: '#fff', 
+                                        backgroundColor: '#fff', 
+                                        color: '#ff6600', 
                                         display: 'flex', 
                                         alignItems: 'center', 
                                         justifyContent: 'center', 
@@ -37,11 +37,12 @@ const Header = () => {
                             </td>
                             <td style={{ lineHeight: '12pt' }}>
                                 <span className="pagetop">
-                                    <b className="hnname"><Link to="/" style={{ color: '#000', textDecoration: 'none' }}>Hacker News</Link></b>
-                                    {' '}new | past | <Link to="/comments">comments</Link> | <Link to="/ask">ask</Link> | <Link to="/show">show</Link> | <Link to="/jobs">jobs</Link> | <Link to="/submit">submit</Link>
+                                    <b className="hnname"><Link to="/" style={{ color: '#000', textDecoration: 'none' }}>S Blogs</Link></b>
+                                    {' '}
+                                    <Link to="/newest">new</Link> | <Link to="/past">past</Link> | <Link to="/comments">comments</Link> | <Link to="/ask">ask</Link> | <Link to="/show">show</Link> | <Link to="/jobs">jobs</Link> | <Link to="/submit">submit</Link>
                                 </span>
                             </td>
-                            <td style={{ textAlign: 'right', paddingRight: '4px' }}>
+                            <td style={{ textAlign: 'right', paddingRight: '4px', whiteSpace: 'nowrap' }}>
                                 <span className="pagetop">
                                     {isLoggedIn ? (
                                         <>
