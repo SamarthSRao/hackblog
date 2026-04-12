@@ -146,13 +146,13 @@ export default function MainPage() {
 
     return (
         <center>
-            <table id="hnmain" border="0" cellPadding="0" cellSpacing="0" style={{ width: '100%', maxWidth: '85%', backgroundColor: '#f6f6ef' }}>
+            <table id="hnmain" border="0" cellPadding="0" cellSpacing="0" style={{ width: '100%', backgroundColor: '#ffffff' }}>
                 <tbody>
                     <Header />
                     <tr style={{ height: '10px' }}></tr>
                     <tr>
                         <td>
-                            <table border="0" cellPadding="0" cellSpacing="0">
+                            <table border="0" cellPadding="0" cellSpacing="0" width="100%">
                                 <tbody>
                                     {filteredStories.map((story) => (
                                         <React.Fragment key={story.id}>

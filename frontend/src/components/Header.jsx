@@ -13,7 +13,7 @@ const Header = () => {
 
     return (
         <tr className="header-row">
-            <td bgcolor="#ff6600">
+            <td bgcolor="#ff2d55">
                 <table border="0" cellPadding="0" cellSpacing="0" width="100%" style={{ padding: '2px' }}>
                     <tbody>
                         <tr>
@@ -22,20 +22,20 @@ const Header = () => {
                                     <div style={{ 
                                         width: '18px', 
                                         height: '18px', 
-                                        backgroundColor: '#fff', 
-                                        color: '#ff6600', 
+                                        backgroundColor: '#000', 
+                                        color: '#ff2d55', 
                                         display: 'flex', 
                                         alignItems: 'center', 
                                         justifyContent: 'center', 
                                         fontWeight: 'bold', 
                                         fontSize: '14px', 
-                                        border: '1px white solid' 
+                                        border: '1px #ff2d55 solid' 
                                     }}>
                                         S
                                     </div>
                                 </Link>
                             </td>
-                            <td style={{ lineHeight: '12pt' }}>
+                            <td style={{ lineHeight: '12pt', height: '10px' }}>
                                 <span className="pagetop">
                                     <b className="hnname"><Link to="/" style={{ color: '#000', textDecoration: 'none' }}>S Blogs</Link></b>
                                     {' '}
