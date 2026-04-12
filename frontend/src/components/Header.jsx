@@ -34,7 +34,9 @@ const Header = () => {
                                             {' '}<a href="#" onClick={handleLogout}>logout</a>
                                         </>
                                     ) : (
-                                        <Link to="/login">login</Link>
+                                        <>
+                                            <Link to="/login">login</Link> | <Link to="/register">register</Link>
+                                        </>
                                     )}
                                 </span>
                             </td>

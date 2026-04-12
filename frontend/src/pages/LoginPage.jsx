@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { authAPI, setAuthToken, setStoredUser } from "../services/api";
+import { useAuth } from "../context/Authcontext";
 import api from '../services/api';
-
 
 function LoginPage() {
     const navigate = useNavigate();
+    const { login, isLoggedIn } = useAuth();
     const [searchParams] = useSearchParams();
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -21,19 +21,8 @@ function LoginPage() {
         }
         setIsLoading(true);
         try {
-            const data = await authAPI.login(email, password); // This might be a promise that resolves to data
-
-            // The mock API returns data directly, but axios returns {data: ...}
-            // Adjust based on actual API implementation. Assuming authAPI handles standardizing response.
-            if (data?.token) {
-                setAuthToken(data.token);
-                if (data.user) setStoredUser(data.user);
-
-                navigate('/', { replace: true });
-            }
-            else {
-                throw new Error("Invalid response from server");
-            }
+            await login(email, password);
+            navigate('/', { replace: true });
         } catch (err) {
             setError(err.response?.data?.error || err.message || "Login Failed");
         }
@@ -41,6 +30,7 @@ function LoginPage() {
             setIsLoading(false);
         }
     };
+
 
     useEffect(() => {
         const checkToken = async () => {

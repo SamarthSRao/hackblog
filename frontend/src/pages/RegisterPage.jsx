@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { authAPI, setAuthToken, setStoredUser } from '../services/api';
+import { useAuth } from '../context/Authcontext';
 
 const RegisterPage = () => {
+    const { register } = useAuth();
     const [formData, setFormData] = useState({
         name: '',
         email: '',
@@ -32,14 +33,11 @@ const RegisterPage = () => {
         setLoading(true);
 
         try {
-            const { user, token } = await authAPI.register({
-                name: formData.name,
-                email: formData.email,
-                password: formData.password
-            });
-
-            setAuthToken(token);
-            setStoredUser(user);
+            await register(
+                formData.name,
+                formData.email,
+                formData.password
+            );
             navigate('/');
         } catch (err) {
             setError(err.response?.data?.error || 'Registration failed');
@@ -47,6 +45,7 @@ const RegisterPage = () => {
             setLoading(false);
         }
     };
+
 
     return (
         <div className="auth-container">
