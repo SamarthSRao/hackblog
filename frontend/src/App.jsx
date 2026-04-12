@@ -8,12 +8,14 @@ import AskPage from './pages/AskPage.jsx';
 import SubmitPage from './pages/SubmitPage.jsx';
 import RecentCommentsPage from './pages/RecentCommentsPage.jsx';
 import { AuthProvider } from './context/Authcontext.jsx';
+import { ThemeProvider } from './context/ThemeContext.jsx';
 import './App.css';
 
 function App() {
   return (
     <AuthProvider>
-      <div className="App">
+      <ThemeProvider>
+        <div className="App">
         <BrowserRouter>
           <Routes>
             {/* Public Routes */}
@@ -36,7 +38,8 @@ function App() {
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </BrowserRouter>
-      </div>
+        </div>
+      </ThemeProvider>
     </AuthProvider>
   );
 }

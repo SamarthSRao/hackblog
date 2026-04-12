@@ -146,7 +146,7 @@ export default function MainPage() {
 
     return (
         <center>
-            <table id="hnmain" border="0" cellPadding="0" cellSpacing="0" style={{ width: '100%', backgroundColor: '#ffffff' }}>
+            <table id="hnmain" border="0" cellPadding="0" cellSpacing="0" style={{ backgroundColor: 'var(--bg-color)' }}>
                 <tbody>
                     <Header />
                     <tr style={{ height: '10px' }}></tr>

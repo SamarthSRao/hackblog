@@ -13,7 +13,7 @@ const Header = () => {
 
     return (
         <tr className="header-row">
-            <td bgcolor="#ff2d55">
+            <td style={{ backgroundColor: 'var(--header-color)' }}>
                 <table border="0" cellPadding="0" cellSpacing="0" width="100%" style={{ padding: '2px' }}>
                     <tbody>
                         <tr>
@@ -22,14 +22,14 @@ const Header = () => {
                                     <div style={{ 
                                         width: '18px', 
                                         height: '18px', 
-                                        backgroundColor: '#000', 
-                                        color: '#ff2d55', 
+                                        backgroundColor: 'var(--bg-color)', 
+                                        color: 'var(--accent-color)', 
                                         display: 'flex', 
                                         alignItems: 'center', 
                                         justifyContent: 'center', 
                                         fontWeight: 'bold', 
                                         fontSize: '14px', 
-                                        border: '1px #ff2d55 solid' 
+                                        border: '1px var(--accent-color) solid' 
                                     }}>
                                         S
                                     </div>
@@ -37,7 +37,7 @@ const Header = () => {
                             </td>
                             <td style={{ lineHeight: '12pt', height: '10px' }}>
                                 <span className="pagetop">
-                                    <b className="hnname"><Link to="/" style={{ color: '#000', textDecoration: 'none' }}>S Blogs</Link></b>
+                                    <b className="hnname"><Link to="/" style={{ color: 'var(--text-color)', textDecoration: 'none' }}>S Blogs</Link></b>
                                     {' '}
                                     <Link to="/newest">new</Link> | <Link to="/past">past</Link> | <Link to="/comments">comments</Link> | <Link to="/ask">ask</Link> | <Link to="/show">show</Link> | <Link to="/jobs">jobs</Link> | <Link to="/submit">submit</Link>
                                 </span>
@@ -46,8 +46,8 @@ const Header = () => {
                                 <span className="pagetop">
                                     {isLoggedIn ? (
                                         <>
-                                            <Link to={`/user/${user.username}`}>{user.username}</Link> ({user.karma || 0}) |
-                                            {' '}<a href="#" onClick={handleLogout}>logout</a>
+                                            <Link name="me" to={`/user/${user.username}`}>{user.username}</Link> ({user.karma || 0}) |
+                                            {' '}<a id="logout" href="#" onClick={handleLogout}>logout</a>
                                         </>
                                     ) : (
                                         <>
