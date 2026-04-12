@@ -23,7 +23,7 @@ const Header = () => {
                             <td style={{ lineHeight: '12pt' }}>
                                 <span className="pagetop">
                                     <b className="hnname"><Link to="/" style={{ color: '#000', textDecoration: 'none' }}>Hacker News</Link></b>
-                                    {' '}new | past | <Link to="/comments">comments</Link> | ask | show | jobs | <Link to="/submit">submit</Link>
+                                    {' '}new | past | <Link to="/comments">comments</Link> | <Link to="/ask">ask</Link> | <Link to="/show">show</Link> | <Link to="/jobs">jobs</Link> | <Link to="/submit">submit</Link>
                                 </span>
                             </td>
                             <td style={{ textAlign: 'right', paddingRight: '4px' }}>
