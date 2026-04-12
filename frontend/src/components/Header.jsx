@@ -18,7 +18,22 @@ const Header = () => {
                     <tbody>
                         <tr>
                             <td style={{ width: '18px', paddingRight: '4px' }}>
-                                <Link to="/"><img src="/y18.svg" width="18" height="18" style={{ border: '1px white solid' }} alt="logo" /></Link>
+                                <Link to="/" style={{ textDecoration: 'none' }}>
+                                    <div style={{ 
+                                        width: '18px', 
+                                        height: '18px', 
+                                        backgroundColor: '#000', 
+                                        color: '#fff', 
+                                        display: 'flex', 
+                                        alignItems: 'center', 
+                                        justifyContent: 'center', 
+                                        fontWeight: 'bold', 
+                                        fontSize: '14px', 
+                                        border: '1px white solid' 
+                                    }}>
+                                        S
+                                    </div>
+                                </Link>
                             </td>
                             <td style={{ lineHeight: '12pt' }}>
                                 <span className="pagetop">
