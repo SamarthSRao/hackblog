@@ -146,7 +146,7 @@ export default function MainPage() {
 
     return (
         <center>
-            <table id="hnmain" border="0" cellPadding="0" cellSpacing="0" width="85%" bgcolor="#f6f6ef">
+            <table id="hnmain" border="0" cellPadding="0" cellSpacing="0" style={{ width: '100%', maxWidth: '85%', backgroundColor: '#f6f6ef' }}>
                 <tbody>
                     <Header />
                     <tr style={{ height: '10px' }}></tr>
@@ -165,8 +165,8 @@ export default function MainPage() {
                             </table>
                         </td>
                     </tr>
+                    <Footer onSearch={handleSearch} />
                 </tbody>
-                <Footer onSearch={handleSearch} />
             </table>
         </center>
     );
