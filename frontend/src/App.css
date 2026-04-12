@@ -93,3 +93,46 @@ body {
   text-decoration: none;
   color: #000000;
 }
+
+/* Mobile Responsive Styles */
+@media only screen and (max-width: 750px) {
+  #hnmain {
+    width: 100% !important;
+  }
+
+  body {
+    margin: 0;
+    padding: 0;
+  }
+
+  .pagetop {
+    font-size: 11pt !important;
+    line-height: 1.5;
+  }
+
+  .title {
+    font-size: 12pt !important;
+  }
+
+  .subtext {
+    font-size: 9pt !important;
+    padding-bottom: 10px;
+  }
+
+  .votearrow {
+    margin-top: 5px;
+    margin-right: 5px;
+  }
+
+  /* Make links easier to tap */
+  a {
+    padding: 2px 0;
+    display: inline-block;
+  }
+
+  /* Stack header links if needed */
+  .hnname {
+    display: block;
+    margin-bottom: 5px;
+  }
+}
